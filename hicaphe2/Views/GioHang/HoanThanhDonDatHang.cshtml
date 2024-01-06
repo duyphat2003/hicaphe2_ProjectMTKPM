@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "HoanThanhDonDatHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align:center">
+    <h2>ĐƠN HÀNG CỦA QUÝ KHÁCH ĐÃ ĐƯỢC GHI NHẬN. CHÚNG TÔI SẼ LIÊN HỆ TRONG THỜI GIAN SỚM NHẤT</h2>
+    <style>
+        .custom-btn {
+            background-color: #your-color; /* Replace #your-color with the color code you want to use */
+            color: #fff; /* Text color */
+            /* Add any additional styling properties you need */
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        @Html.ActionLink("Về trang chủ", "Index", "HiCaPhe", null, new { @class = "btn btn-primary btn-lg custom-btn" })
+    </p>
+</div>
+

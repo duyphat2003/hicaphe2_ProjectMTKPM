@@ -1,0 +1,112 @@
+﻿@model hicaphe2.Models.SANPHAM
+
+@{
+    ViewBag.Title = "ChiTietSanPham";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .content {
+        width: 50%; /* Điều chỉnh chiều rộng theo ý muốn */
+        height: -50%;
+        text-align: center;
+    }
+
+    .row {
+        margin-bottom: 10px;
+        padding-bottom: 10px; /* Thêm padding để tăng khoảng cách giữa các mục */
+        border-bottom: 1px solid #dddd; /* Thêm đường line giữa các mục */
+    }
+
+    .row-title {
+        font-weight: bold;
+        text-align: right;
+        padding-top: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="content">
+        <h2>CHI TIẾT SẢN PHẨM</h2>
+
+        <div>
+
+            <hr />
+            <hr />
+
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    TÊN SẢN PHẨM:
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.TenSP)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    ĐƠN VỊ TÍNH:
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.Donvitinh)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    ĐƠN GIÁ:
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.Dongia)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    MÔ TẢ:
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.Mota)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    ẢNH :
+                </div>
+                <div class="col-md-9">
+                    <img src="~/Images/@Model.Hinhminhhoa" style="width: 120px;" />
+                </div>
+                <div class="row">
+                    <div class="col-md-3 row-title">
+                        LOẠI SẢN PHẨM:
+                    </div>
+                    <div class="col-md-9 ">
+                        @Html.DisplayFor(model => model.LOAISP.TenLoaiSP)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 row-title">
+                    SỐ LƯỢNG BÁN:
+                </div>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.Soluongban)
+                </div>
+            </div>
+
+        </div>
+        <p>
+            @Html.ActionLink("ĐIỀU CHỈNH", "SuaSanPham", new { id = Model.MaSP }) |
+            <a class="btn btn-primary btn-lg custom-btn" href="@Url.Action("SANPHAM")">Trở về</a>
+        </p>
+        <style>
+            .custom-btn {
+                background-color: #your-color; /* Thay #your-color bằng mã màu bạn muốn sử dụng */
+                color: #fff; /* Màu chữ */
+                /* Các thuộc tính khác nếu cần */
+            }
+        </style>

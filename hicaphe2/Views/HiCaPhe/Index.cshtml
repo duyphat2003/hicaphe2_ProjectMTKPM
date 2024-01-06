@@ -1,0 +1,374 @@
+﻿@using hicaphe2.Models
+@using PagedList.Mvc
+@model IEnumerable<SANPHAM>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="header-carousel" class="carousel slide" data-ride="carousel">
+    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+            <span class="carousel-control-prev-icon mb-n2"></span>
+        </div>
+    </a>
+    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+            <span class="carousel-control-next-icon mb-n2"></span>
+        </div>
+    </a>
+    <div class="carousel-item active" style="height: 410px;">
+        <img class="img-fluid" src="~/Images/img/carouse-1.png" alt="Image">
+        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+            <div class="p-3" style="max-width: 1200px;">
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Nguyên chất</h3>
+                <h4 class="text-light text">Nguyên liệu được lấy từ thiên nhiên và tinh chế ra các sản phẩm tươi ngon mà vẫn giữ nguyên hương vị gốc của nguyên liệu</h4>
+                <a href="" class="btn btn-light py-2 px-3">Thưởng thức xíu đi nào ní ơi! </a>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-item" style="height: 410px;">
+        <img class="img-fluid" src="~/Images/img/carouse-2.png" alt="Image">
+        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+            <div class="p-3" style="max-width: 1200px;">
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Tiện lợi</h3>
+                <h4 class="text-light text">Từ không gian quán, thanh toán đến đặt hàng đều đa dạng. Mang đến sự hài lòng của khách khi đắm chìm vào các cuộc họp, học nhóm, trò chuyện, giải trí.</h4>
+                <a href="" class="btn btn-light py-2 px-3">Thưởng thức xíu đi nào ní ơi!</a>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-item" style="height: 410px;">
+        <img class="img-fluid" src="~/Images/img/carouse-3.png" alt="Image">
+        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+            <div class="p-3" style="max-width: 1200px;">
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Liên tục</h3>
+                <h4 class="text-light text">Tại Hi cà phê, cánh cửa luôn luôn mở để đón chào khách hàng đến trải nghiệm dịch vụ.</h4>
+                <a href="" class="btn btn-light py-2 px-3">Thưởng thức xíu đi nào ní ơi!</a>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-item" style="height: 410px;">
+        <img class="img-fluid" src="~/Images/img/carouse-4.png" alt="Image">
+        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+            <div class="p-3" style="max-width: 1200px;">
+                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Đa dạng</h3>
+                <h4 class="text-light text">Với hệ thống kiểm soát bán hàng và đặt hàng trực tuyến đa tiện lợi giúp cho khách hàng, quản lí và nhân viên đều có thể dễ sử dụng.</h4>
+                <a href="" class="btn btn-light py-2 px-3">Thưởng thức xíu đi nào ní ơi!</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row justify-content-md-center">
+    <!-- Featured Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5 pb-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Bảo đảm chất lượng tốt</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Giao hàng miễn phí</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Đổi trả nếu gặp vấn đề</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Hỗ trợ 24/24</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Featured End    ->
+
+    <!-- Offer Start -->
+    <div class="container-fluid offer pt-5">
+        <div class="row px-xl-5">
+            <div class="col-md-6 pb-4">
+                <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
+                    <img src="img/Orange.png" alt="">
+                    <div class="position-relative" style="z-index: 1;">
+                        <h5 class="text-uppercase text-primary mb-3">Giảm giá 20% cho tất cả các đơn hàng</h5>
+                        <h1 class="mb-4 font-weight-semi-bold">Hương vị mùa hè</h1>
+                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pb-4">
+                <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
+                    <img src="img/Orange.png" alt="">
+                    <div class="position-relative" style="z-index: 1;">
+                        <h5 class="text-uppercase text-primary mb-3">Giảm giá 20% cho tất cả các đơn hàng</h5>
+                        <h1 class="mb-4 font-weight-semi-bold">Hương vị mùa đông</h1>
+                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Offer End    ->
+
+    <!-- Products Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Bộ thương hiệu của Hi</span></h2>
+        </div>
+
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="owl-carousel related-carousel">
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0045">
+                                <img class="img-fluid w-100" src="/Images/sp0045.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Bánh Hi</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: N</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>15.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0045" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>               
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0038">
+                                <img class="img-fluid w-100" src="/Images/sp0038.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Sổ tay Hi</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: N</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>9.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0038" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0032">
+                                <img class="img-fluid w-100" src="/Images/sp0032.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Sữa lắc Hi</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: L</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>23.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0032" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Products End->
+
+    <!-- Subscribe Start -->
+    <div class="container-fluid bg-secondary my-5">
+        <div class="row justify-content-md-center py-5 px-xl-5">
+            <div class="col-md-6 col-12 py-5">
+                <div class="text-center mb-2 pb-2">
+                    <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Ý kiến của ní thế nào?</span></h2>
+                    <p>Hãy gửi những ý kiến hoặc phản hồi đến cho Hi nhé 😉</p>
+                </div>
+                <form action="">
+                    <div class="input-group justify-content-md-center">
+                        <input type="text" class="form-control border-white p-4" placeholder="Nhập ý kiến của ní tại đây">
+                        <style>
+                            .custom-btn {
+                                background-color: #your-color; /* Replace #your-color with the color code you want to use */
+                                color: #fff; /* Text color */
+                                /* Add any additional styling properties you need */
+                                border: none;
+                                padding: 5px 10px;
+                                cursor: pointer;
+                                
+                            }
+                        </style>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-lg custom-btn">Đăng kí</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Subscribe End -->
+
+    <!-- Products Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Sản phẩm nổi bật</span></h2>
+        </div>
+
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="owl-carousel related-carousel">
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0044">
+                                <img class="img-fluid w-100" src="/Images/sp0044.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Bánh bông lan</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: N</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>26.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0044" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0045">
+                                <img class="img-fluid w-100" src="/Images/sp0045.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Bánh Hi</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: N</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>15.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0045" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0010">
+                                <img class="img-fluid w-100" src="/Images/sp0010.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Latte</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: L</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>27000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0010" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0008">
+                                <img class="img-fluid w-100" src="/Images/sp0008.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Cappuccino</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: L</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>15.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="@Url.Action("ThemSanPhamVaoGio", "GioHang", new{ MaSP = "sp0008" })" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+
+
+                    <div class="card product-item border-0">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <a href="/HiCaPhe/Details/sp0032">
+                                <img class="img-fluid w-100" src="/Images/sp0032.png" alt="Card image">
+                            </a>
+                        </div>
+
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="h4 text-truncate mb-3">Sữa lắc Hi</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>Kích thước: L</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>23.000 đ/1 Cái</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-center bg-light border">
+
+                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Products End-->
+
+</div>

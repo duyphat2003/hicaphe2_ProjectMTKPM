@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1967075a9cfe4471bb393c57815b8a01" Name="Diagram1">
+        <EntityTypeShape EntityType="HiCaPheModel.ADMIN" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HiCaPheModel.CTDATHANG" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HiCaPheModel.DONDATHANG" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="HiCaPheModel.LOAISP" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HiCaPheModel.SANPHAM" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HiCaPheModel.TAIKHOANKHACHHANG" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="HiCaPheModel.FK_CTDatHang_DonDatHang" ManuallyRouted="false" />
+        <AssociationConnector Association="HiCaPheModel.FK_CTDatHang_SanPham" ManuallyRouted="false" />
+        <AssociationConnector Association="HiCaPheModel.FK_DonDatHang_TaikhoanKhachHang" ManuallyRouted="false" />
+        <AssociationConnector Association="HiCaPheModel.FK_SanPham_LoaiSP" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,85 @@
+﻿
+@using hicaphe2.Models
+@using PagedList.Mvc
+@model PagedList.PagedList<SANPHAM>
+@{
+    ViewBag.Title = "SPTheoLoai";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản phẩm theo loại</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Sản phẩm</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<div style="height: 70px; text-align: center; padding: 15px;">
+    <!-- Đoạn thêm -->
+    @using (Html.BeginForm("SanPham", "HiCaPhe", FormMethod.Get))
+    {
+        <table>
+            <tr>
+                <td>
+                    Tên Sản phẩm : <input type="text" name="timkiemchuoi" />
+                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+
+                </td>
+                <td>
+                    Đơn giá từ : <input type="number" name="minPrice" />
+                    Đến : <input type="number" name="maxPrice" />
+                    <input type="submit" value="Tìm giá" class="btn btn-info" />
+                </td>
+
+
+            </tr>
+        </table>
+    }
+    <!--Kết thúc -->
+    <!--Vị trí trình bày cho mục 5, tìm sản phẩm theo tên sp và giá-->
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        @Html.Action("LayLoaiSP", "HiCaPhe")
+    </div>
+
+    <div class="col-md-9">
+        <div class="row">
+            @foreach (var sanpham in Model)
+            {
+
+                <div class="card col-sm-4 col-md-4 col-lg-4 d-flex align-items-stretch book-section">
+
+                    <a href="@Url.Action("Details", "HiCaPhe", new { id = sanpham.MaSP })">
+                        <img class="card-img-top book-picture"
+                             src="~/Images/@sanpham.Hinhminhhoa" alt="Card image">
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">@sanpham.TenSP</h4>
+                        <p class="card-text">Kích thước: @sanpham.Kichthuoc</p>
+                        <p class="card-text">@sanpham.Dongia đồng/@sanpham.Donvitinh</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Thêm mã phân trang -->
+<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+<div class="MenuTrang">
+    @Html.PagedListPager(Model, page => Url.Action("SPTheoLoai", new { page }))
+</div>
+<style>
+    .MenuTrang li {
+        display: inline;
+    }
+</style>
+<!-- Kết thúc -->

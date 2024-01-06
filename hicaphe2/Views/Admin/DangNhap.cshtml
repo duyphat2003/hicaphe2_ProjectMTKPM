@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Simple Login Form</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="~/Content/reset.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/structure.css">
+</head>
+<body>
+    <h2>@ViewBag.ThongBao</h2>
+    @using (Html.BeginForm("DangNhap", "Admin", FormMethod.Post, new { @class = "box login" }))
+    {
+        @Html.ValidationSummary(true)
+        <fieldset class="boxBody">
+            <label>Tên người dùng</label>
+            <input name="UserAdmin" type="text" tabindex="1" placeholder="Tên người dùng"
+                   required>
+            <label>
+                <a href="#" class="rLink" tabindex="5">
+                    Quên mật khẩu?
+                </a>Mật khẩu
+            </label>
+            <input name="PassAdmin" type="password" tabindex="2" placeholder="Mật khẩu"
+                   required>
+        </fieldset>
+        <footer>
+            <label><input type="checkbox" tabindex="3">Giữ đăng nhập</label>
+            <input type="submit" class="btnLogin" value="Đăng nhập" tabindex="4">
+        </footer>
+    }
+</body>
+
+</html>

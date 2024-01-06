@@ -1,0 +1,112 @@
+﻿@using hicaphe2.Models
+@model List<MatHangMua>
+@{
+    ViewBag.Title = "HienThiGioHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<title>Giỏ hàng - Hi cà phê</title>
+<table class="table table-bordered">
+    <tbody>
+        <!-- Page Header Start -->
+        <div class="container-fluid bg-secondary mb-5">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Giỏ hàng</h1>
+                <div class="d-inline-flex">
+                    <p class="m-0"><a href="">Trang chủ</a></p>
+                    <p class="m-0 px-2">-</p>
+                    <p class="m-0">Giỏ hàng</p>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+        <style>
+            .img-small {
+                max-width: 110px; /* Set the maximum width for the images */
+                height: auto; /* Maintain the aspect ratio */
+            }
+        </style>
+        @foreach (var sanpham in Model)
+        {
+            <tr>
+                <td>@sanpham.MaSP</td>
+                <td class="w-25">@sanpham.TenSP</td>
+                <td class="w-25"><img src="~/Images/@sanpham.Hinhminhhoa" class="img-fluid img-small" /></td>
+
+                @using (Html.BeginForm("CapNhatMatHang", "GioHang", new { MaSP = sanpham.MaSP }))
+                {
+                    <td>@sanpham.Kichthuoc</td>
+                    <td>
+                        <input type="number" min="1" value="@sanpham.SoLuong" name="SoLuong" />
+                    </td>
+                    <td>@sanpham.Dongia</td>
+                    <td>@sanpham.ThanhTien()</td>
+                    <style>
+                        .custom-btn2 {
+                            background-color: #d32f2f; /* Replace #your-color with the color code you want to use */
+                            color: #fff; /* Text color */
+                            /* Add any additional styling properties you need */
+                            border: none;
+                            padding: 5px 10px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "Details", "HiCaPhe", new { id = sanpham.MaSP }, new { @class = "btn btn-danger btn-lg custom-btn2" })
+                    </td>
+                    <style>
+                        .custom-btn {
+                            background-color: #your-color; /* Replace #your-color with the color code you want to use */
+                            color: #fff; /* Text color */
+                            /* Add any additional styling properties you need */
+                            border: none;
+                            padding: 5px 10px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-lg custom-btn">Cập nhật</button>
+                    </td>
+                }
+                <style>
+                    .custom-btn3 {
+                        background-color: #2e7e14; /* Replace #your-color with the color code you want to use */
+                        color: #fff; /* Text color */
+                        /* Add any additional styling properties you need */
+                        border: none;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        border-radius: 5px;
+                    }
+                </style>
+                <td>
+                    @Html.ActionLink("Xóa hàng", "XoaMatHang", "GioHang", new { MaSP = sanpham.MaSP }, new { @class = "btn btn-success btn-lg custom-btn3" })
+                </td>
+            </tr>
+        }
+        <tr style="font-weight:bold; text-align:right; color:red;">
+            <td colspan="5">Tổng số lượng: @ViewBag.TongSL</td>
+            <td colspan="1">Tổng tiền: @ViewBag.TongTien</td>
+        </tr>
+        <style>
+            .custom-btn {
+                background-color: #your-color; /* Replace #your-color with the color code you want to use */
+                color: #fff; /* Text color */
+                /* Add any additional styling properties you need */
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+        </style>
+        <tr style="font-weight:bold; text-align:center;">
+            <td colspan="9">
+                @Html.ActionLink("ĐẶT HÀNG", "DatHang", null, new { @class = "btn btn-primary btn-lg custom-btn" })
+            </td>
+        </tr>
+
+    </tbody>
+
+</table>

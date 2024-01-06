@@ -1,0 +1,158 @@
+﻿@using hicaphe2.Models
+@using PagedList.Mvc
+@model PagedList.PagedList<SANPHAM>
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản phẩm</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ NV</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Quản lý sản phẩm</p>
+        </div>
+    </div>
+    <!-- Page Header End -->
+</div>
+
+<div style="height: 70px; text-align: center; padding: 15px;">
+    <!-- Đoạn thêm -->
+    @using (Html.BeginForm("SanPham", "Admin", FormMethod.Get))
+    {
+        <table>
+            <tr>
+                <td>
+                    Tên Sản phẩm : <input type="text" name="timkiemchuoi" />
+                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" style="margin-right:20px;" />
+                </td>
+
+                <td>
+                    Đơn giá từ : <input type="number" name="minPrice" />
+                    Đến : <input type="number" name="maxPrice" />
+                    <input type="submit" value="Tìm giá" class="btn btn-info" style="margin-right:20px;" />
+                </td>
+                
+                <td>
+                    @Html.ActionLink("Thêm sản phẩm mới", "ThemSanPham", null, new { @class = "btn btn-primary custom-btn" })
+                    <br/>
+                </td>
+            </tr>
+        </table>
+        
+    }
+    <!-- Kết thúc -->
+</div>
+<style>
+    .custom-btn {
+        background-color: #your-color; /* Thay #your-color bằng mã màu bạn muốn sử dụng */
+        color: #fff; /* Màu chữ */
+        /* Các thuộc tính khác nếu cần */
+    }
+</style>
+
+
+
+
+<table class="table">
+    @if (Model.Count == 0)
+    {    
+        <tr>
+            <td colspan="10" class="text-danger">Không tìm thấy sản phẩm phù hợp.</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th>
+                Mã sản phẩm
+            </th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Kích thước
+            </th>
+            <th>
+                Đơn vị tính
+            </th>
+            <th>
+                Đơn giá
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Hình minh họa
+            </th>
+            <th>
+                Loại sản phẩm
+            </th>
+            <th>
+                Số lượng bán
+            </th>
+            <th></th>
+        </tr>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaSP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenSP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kichthuoc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Donvitinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dongia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mota)
+                </td>
+                <td>
+                    <img class="card-img-top book-picture" src="~/Images/@item.Hinhminhhoa" style="max-width: 70x; max-height: 100px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LOAISP.TenLoaiSP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluongban)
+                </td>
+                <td style="width: 150px;">
+                    @Html.ActionLink("SỬA", "Edit", new { id = item.MaSP }) |
+                    @Html.ActionLink("CHI TIẾT", "ChiTietSanPham", new { id = item.MaSP }) |
+                    @Html.ActionLink("XÓA", "Delete", new { id = item.MaSP })
+                </td>
+            </tr>
+        }
+
+    }
+
+
+</table>
+
+<style>
+    .MenuTrang li {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    td, th {
+        text-align: center;
+    }
+</style>
+
+<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+<div class="MenuTrang">
+    @Html.PagedListPager(Model, page => Url.Action("SanPham", new { page }))
+</div>
+

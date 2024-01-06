@@ -1,0 +1,115 @@
+﻿@model hicaphe2.Models.SANPHAM
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container">
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "mx-auto" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>  SỬA SẢN PHẨM </h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaSP)
+
+        <div class="form-group">
+            Tên sản phẩm
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenSP, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TenSP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Kích thước
+            <div class="col-md-10">
+                @{
+                    // Tạo danh sách SelectListItem với dữ liệu cứng
+                    List<SelectListItem> items = new List<SelectListItem>
+                                                    {
+                            new SelectListItem { Text = "-", Value = "-" },
+                            new SelectListItem { Text = "Nhỏ", Value = "N" },
+                            new SelectListItem { Text = "Lớn", Value = "L" },
+                        };
+                }
+                @Html.DropDownList("Kichthuoc", items, "Chọn kích thước", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Kichthuoc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Đơn vị tính
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Donvitinh, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Donvitinh, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Đồng giá
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Dongia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Dongia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Mô tả
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mota, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mota, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Hình minh họa
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Hinhminhhoa, new { htmlAttributes = new { type = "file", @class = "form-control" } })
+                <img src="~/Images/@Model.Hinhminhhoa" width="200" height="200" />
+                @Html.ValidationMessageFor(model => model.Hinhminhhoa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Mã loại sản phẩm
+            <div class="col-md-10">
+                @Html.DropDownList("MaLoaiSP", null, "Chọn loại sản phẩm", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MaLoaiSP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            Số lượng bán
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Soluongban, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Soluongban, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <style>
+            .custom-btn {
+                background-color: #your-color; /* Thay #your-color bằng mã màu bạn muốn sử dụng */
+                color: #fff; /* Màu chữ */
+                /* Các thuộc tính khác nếu cần */
+            }
+        </style>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input type="submit" value="Lưu" class="btn btn-primary btn-lg custom-btn" />
+                    </div>
+                    <div class="form-group" style="margin-left: 730px;">
+                        <!-- Thêm margin cho khoảng cách -->
+                        <a class="btn btn-primary btn-lg custom-btn" href="@Url.Action("SANPHAM")">Trở về</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+

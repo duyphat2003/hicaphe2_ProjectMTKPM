@@ -1,0 +1,120 @@
+﻿@model hicaphe2.Models.SANPHAM
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .content {
+        width: 50%; /* Điều chỉnh chiều rộng theo ý muốn */
+        text-align: center; /* Căn giữa theo chiều ngang */
+    }
+
+    dl {
+        text-align: left; /* Căn lề trái cho danh sách chi tiết */
+    }
+
+    .form-actions {
+        margin-top: 20px; /* Khoảng cách từ nút xóa đến đường phân cách hoặc phía trên */
+        text-align: center; /* Căn giữa nút và link Trở về */
+    }
+</style>
+<div class="container">
+    <div class="content">
+        <h3>BẠN CÓ CHẮC MUỐN XÓA SẢN PHẨM NÀY KHÔNG?</h3>
+        <div>
+
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    Mã sản phẩm
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.MaSP)
+                </dd>
+
+                <dt>
+                    Tên sản phẩm
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TenSP)
+                </dd>
+
+                <dt>
+                    Kích thước
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Kichthuoc)
+                </dd>
+
+                <dt>
+                    Đơn vị tính
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Donvitinh)
+                </dd>
+
+                <dt>
+                    Đồng giá
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Dongia)
+                </dd>
+
+                <dt>
+                    Mô tả
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Mota)
+                </dd>
+
+                <dt>
+                    Hình minh họa
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Hinhminhhoa)
+                </dd>
+
+                <dt>
+                    Mã loại sản phẩm
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.MaLoaiSP)
+                </dd>
+
+                <dt>
+                    Số lượng bán
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Soluongban)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Xóa" class="btn btn-default" /> |
+                    @Html.ActionLink("Trở về", "SANPHAM")
+                </div>
+            }
+        </div>

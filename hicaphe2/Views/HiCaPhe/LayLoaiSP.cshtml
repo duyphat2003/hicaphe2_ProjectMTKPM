@@ -1,0 +1,12 @@
+﻿@using hicaphe2.Models
+@model IEnumerable<LOAISP>
+<div class="title">Loại sản phẩm</div>
+<ul class="list-group">
+    @foreach (var loai in Model)
+    {
+        <a href="@Url.Action("SPTheoLoai", "HiCaPhe", new { id=loai.MaLoaiSP })"
+           class="list-group-item list-group-item-action">
+            @loai.TenLoaiSP
+        </a>
+    }
+</ul>

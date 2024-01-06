@@ -1,0 +1,13 @@
+﻿.title {
+    margin: 20px 0;
+    color: darkblue;
+}
+
+.book-section {
+    text-align: center;
+    border: none;
+}
+
+.book-picture {
+    height: 100%;
+}

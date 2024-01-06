@@ -1,0 +1,64 @@
+﻿@using hicaphe2.Models
+@model List<DONDATHANG>
+@{
+    ViewBag.Title = "QuanLyDonHang";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Quản lý đơn hàng</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ NV</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Quản lý sản phẩm</p>
+        </div>
+    </div>
+    <!-- Page Header End -->
+</div>
+<table class="table">
+    <tr>
+        <th>Số Đơn Hàng</th>
+        <th>Mã tài khoản</th>
+        <th>Tên người nhận</th>
+        <th>Trị Giá</th>
+        <th>Ngày Đặt Hàng</th>
+        <th>Trạng Thái</th>
+        <th>Thao Tác</th>
+    </tr>
+
+    @foreach (var donHang in Model)
+    {
+        <tr>
+            <td>@donHang.SODH</td>
+            <td>@donHang.MaTK</td>
+            <td>@donHang.Tennguoinhan</td>
+            <td>@donHang.Trigia</td>
+            <td>@donHang.NgayDH</td>           
+            <td>
+                @if (donHang.Dahuy ?? false)
+                {
+                    <span class="badge badge-warning">Đã hủy</span>
+                }
+                else if ((bool)donHang.Dagiao)
+                {
+                    <span class="badge badge-success">Đã giao</span>
+                }
+                else
+                {
+                    <span class="badge badge-info">Chưa giao</span>
+                }
+            </td>
+            <td>
+                @if ((!donHang.Dahuy.HasValue || !donHang.Dahuy.Value) && (!donHang.Dagiao.HasValue || !donHang.Dagiao.Value))
+                {
+                    <!-- Chỉ hiển thị nút Xác nhận nếu đơn hàng chưa được xác nhận -->
+                    <a href="@Url.Action("XacNhanDonHang", "Admin", new { soDonHang = donHang.SODH })" class="btn btn-success">Xác nhận</a>
+                    <a href="@Url.Action("HuyDonHang", "Admin", new { soDonHang = donHang.SODH })" class="btn btn-danger">Hủy đơn hàng</a>
+                }
+                <!-- Thêm các thao tác khác tùy thuộc vào yêu cầu của bạn -->
+            </td>
+        </tr>
+    }
+</table>
