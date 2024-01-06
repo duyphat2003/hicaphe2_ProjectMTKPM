@@ -12,8 +12,8 @@ namespace hicaphe2.Models
     public interface ILogin<T>
     {
         //Get
-        ActionResult DangNhap();
+        bool DangNhap(string taiKhoan);
         //Post
-        ActionResult DangNhap(T x);
+        bool DangNhap(T x, ref object taikhoan);
     }
 }

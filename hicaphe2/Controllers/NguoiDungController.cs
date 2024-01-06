@@ -1,4 +1,5 @@
 ﻿using hicaphe2.Models;
+using hicaphe2.Models.Factory_Method_Pattern;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Web.Security;
 
 namespace hicaphe2.Controllers
 {
-    public class NguoiDungController : Controller, ILogin<TAIKHOANKHACHHANG>
+    public class NguoiDungController : Controller
     {
         // GET: NguoiDung
         [HttpGet]
@@ -50,43 +51,39 @@ namespace hicaphe2.Controllers
             }
             return RedirectToAction("DangNhap");
         }
+
+        DangNhapFactory<TAIKHOANKHACHHANG> dangNhapFactory;
+        ILogin<TAIKHOANKHACHHANG> user;
+        void CreateLogin()
+        {
+            dangNhapFactory = new DangNhapUser();
+            user = dangNhapFactory.CreateLogin();
+        }
+
         [HttpGet]
         public ActionResult DangNhap()
-        {           
-            String taiKhoan = Session["TaiKhoan"] as String;
-            if (taiKhoan != null)
-                return Redirect("/HiCaPhe/Index");
-            return View();
-
-        }
-        [HttpPost]
-        public ActionResult DangNhap(TAIKHOANKHACHHANG kh)
         {
-            
-            if (ModelState.IsValid) 
+            String taiKhoan = Session["TaiKhoan"] as String;
+            CreateLogin();
+            if (user.DangNhap(taiKhoan))
             {
-                if (string.IsNullOrEmpty(kh.Email))
-                    ModelState.AddModelError(string.Empty, "Tên đăng nhập không được để trống");
-                if (string.IsNullOrEmpty(kh.Matkhau))
-                    ModelState.AddModelError(string.Empty, "Mật khẩu không được để trống");
-                if (ModelState.IsValid)
-                {
-                    //Tìm khách hàng có tên đăng nhập và password hợp lệ trong CSDL
-                    var khach = HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.FirstOrDefault(k => k.Email == kh.Email && k.Matkhau == kh.Matkhau);
-                    if (khach != null)
-                    {
-                        // lưu vào session
-                        Session["TaiKhoan"] = khach;                    
-                        return Redirect("/");
-                    }
-                    else
-                    {                    
-                        ViewBag.ThongBao = "Tên đăng nhập hoặc mật khẩu không đúng";
-                        return View();
-                    }
-                }
+                return Redirect("/HiCaPhe/Index");
             }
-            return View();
+            else
+                return View();
+        }
+        object taikhoan;
+        [HttpPost]
+        public ActionResult DangNhap(TAIKHOANKHACHHANG x)
+        {
+            CreateLogin();
+            if (user.DangNhap(x, ref taikhoan))
+            {
+                Session["TaiKhoan"] = taikhoan;
+                return Redirect("/");
+            }
+            else
+                return View();
         }
         public ActionResult DangXuat()
         {

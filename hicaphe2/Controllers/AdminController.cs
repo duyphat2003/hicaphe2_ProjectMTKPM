@@ -8,10 +8,11 @@ using PagedList;
 using System.IO;
 using System.Net;
 using System.Data.Entity;
+using hicaphe2.Models.Factory_Method_Pattern;
 
 namespace hicaphe2.Controllers
 {
-    public class AdminController : Controller, ILogin<ADMIN>
+    public class AdminController : Controller
     {
         // GET: Admin
         public ActionResult Index()
@@ -20,35 +21,37 @@ namespace hicaphe2.Controllers
                 return RedirectToAction("Login");
             return View();
         }
+
+        DangNhapFactory<ADMIN> dangNhapFactory;
+        ILogin<ADMIN> admin;
+        void CreateLogin()
+        {
+            dangNhapFactory = new DangNhapAdmin();
+            admin = dangNhapFactory.CreateLogin();
+        }
+
         [HttpGet]
         public ActionResult DangNhap()
         {
             String taiKhoan = Session["Admin"] as String;
-            if (taiKhoan != null)
+            CreateLogin();
+            if (admin.DangNhap(taiKhoan))
                 return Redirect("/HiCaPhe/Index");
-            return View();
+            else
+                return View();
         }
+        object taikhoan;
         [HttpPost]
         public ActionResult DangNhap(ADMIN x)
         {
-            if (ModelState.IsValid)
+            CreateLogin();
+            if (admin.DangNhap(x, ref taikhoan))
             {
-                if (string.IsNullOrEmpty(x.UserAdmin))
-                    ModelState.AddModelError(string.Empty, "User name không được để trống");
-                if (string.IsNullOrEmpty(x.PassAdmin))
-                    ModelState.AddModelError(string.Empty, "Password không được để trống");
-                //Kiểm tra có admin này hay chưa
-                var adminDB = HiCaPheDatabase.Instance.database.ADMIN.FirstOrDefault(ad => ad.UserAdmin == x.UserAdmin && ad.PassAdmin == x.PassAdmin);
-                if (adminDB == null)
-                    ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc mật khẩu không đúng");
-                else
-                {
-                    Session["Admin"] = adminDB;
-                    ViewBag.ThongBao = "Đăng nhập admin thành công";
-                    return RedirectToAction("Index", "Admin");
-                }
+                Session["Admin"] = taikhoan;
+                return RedirectToAction("Index", "Admin");
             }
-            return View();
+            else
+                return View();
         }
 
         public ActionResult SanPham(int? page, string timkiemchuoi, double minPrice = double.MinValue, double maxPrice = double.MaxValue)
