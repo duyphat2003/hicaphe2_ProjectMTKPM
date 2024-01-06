@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+/// <summary>
+/// Factory Method Pattern
+/// </summary>
 namespace hicaphe2.Models.Factory_Method_Pattern
 {
     public class Admin : Controller, ILogin<ADMIN>
