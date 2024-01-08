@@ -18,6 +18,8 @@ namespace hicaphe2.Models.Builder_Pattern
         public double Dongia { get; set; }
         public int Loai { get; set; }
         public int SoLuong { get; set; }
+        public string message { get; set; }
+        public Tuple<int, int, int> Color { get; set; }
 
         public double ThanhTien()
         {
@@ -36,7 +38,7 @@ namespace hicaphe2.Models.Builder_Pattern
             this.SoLuong = 1;
         }
 
-        public MatHangMua(string maSP, string tenSP, string hinhminhhoa, string kichthuoc, double dongia, int loai, int soLuong)
+        public MatHangMua(string maSP, string tenSP, string hinhminhhoa, string kichthuoc, double dongia, int loai, int soLuong, string text, Tuple<int, int, int> color)
         {
             MaSP = maSP;
             TenSP = tenSP;
@@ -45,6 +47,8 @@ namespace hicaphe2.Models.Builder_Pattern
             Dongia = dongia;
             Loai = loai;
             SoLuong = soLuong;
+            message = text;
+            Color = color;
         }
     }
 }

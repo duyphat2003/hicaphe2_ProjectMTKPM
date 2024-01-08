@@ -11,16 +11,18 @@ namespace hicaphe2.Models.Builder_Pattern
     public class TaoSanPham
     {
         List<string> infos;
+        Tuple<int, int, int> color;
+        string text;
 
-        public TaoSanPham() 
+        public TaoSanPham() => infos = new List<string>();
+
+        public void AddInfo(string info) => infos.Add(info);
+
+        public void DecorateSPCart(string text, Tuple<int, int, int> color)
         {
-            infos = new List<string>();
+            this.text = text;
+            this.color = color;
         }
-
-        public void AddInfo(string info)
-        {
-            infos.Add(info);
-        }   
 
         public MatHangMua matHangMua()
         {
@@ -37,7 +39,9 @@ namespace hicaphe2.Models.Builder_Pattern
                 kichThuoc,
                 donGia,
                 loai,
-                soLuong);
+                soLuong,
+                text, 
+                color);
         }
     }
 }

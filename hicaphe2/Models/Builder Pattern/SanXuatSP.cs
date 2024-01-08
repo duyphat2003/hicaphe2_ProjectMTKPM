@@ -12,9 +12,10 @@ namespace hicaphe2.Models.Builder_Pattern
     {
         IBuilderSanPham iBuilderSanPham;
 
-        public void Constructor(IBuilderSanPham iBuilderSanPham)
+        public void Constructor(IBuilderSanPham iBuilderSanPham, string message, Tuple<int, int, int> color)
         {
             this.iBuilderSanPham = iBuilderSanPham;
+            iBuilderSanPham.SetEffectImage(message, color);
             iBuilderSanPham.SetMaSP();
             iBuilderSanPham.SetTenSP();
             iBuilderSanPham.SetHinhMinhHoa();

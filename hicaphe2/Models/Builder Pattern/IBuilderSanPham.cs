@@ -10,6 +10,7 @@ namespace hicaphe2.Models.Builder_Pattern
     /// </summary>
     public interface IBuilderSanPham
     {
+        void SetEffectImage(string message, Tuple<int, int, int> color);
         void SetMaSP();
         void SetTenSP();
         void SetHinhMinhHoa();

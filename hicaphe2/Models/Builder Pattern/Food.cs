@@ -23,44 +23,22 @@ namespace hicaphe2.Models.Builder_Pattern
             soLuong = 1;
         }
 
-        public void SetMaSP()
-        {
-            taoSP.AddInfo(MaSP);    
-        }
+        public void SetEffectImage(string message, Tuple<int, int, int> color) => taoSP.DecorateSPCart(message, color);
 
-        public void SetTenSP()
-        {
-            taoSP.AddInfo(sanpham.TenSP);
-        }
+        public void SetMaSP() => taoSP.AddInfo(MaSP);
 
-        public void SetHinhMinhHoa()
-        {
-            taoSP.AddInfo(sanpham.Hinhminhhoa);
-        }
+        public void SetTenSP() => taoSP.AddInfo(sanpham.TenSP);
 
-        public void SetKichThuoc()
-        {
-            taoSP.AddInfo(sanpham.Kichthuoc);
-        }
+        public void SetHinhMinhHoa() => taoSP.AddInfo(sanpham.Hinhminhhoa);
 
-        public void SetDongia()
-        {
-            taoSP.AddInfo(sanpham.Dongia.ToString());
-        }
+        public void SetKichThuoc() => taoSP.AddInfo(sanpham.Kichthuoc);
 
-        public void SetLoai()
-        {
-            taoSP.AddInfo(sanpham.LOAISP.ToString());
-        }
+        public void SetDongia() => taoSP.AddInfo(sanpham.Dongia.ToString());
 
-        public void SetSoLuong()
-        {
-            taoSP.AddInfo(soLuong.ToString());
-        }
+        public void SetLoai() => taoSP.AddInfo(sanpham.LOAISP.ToString());
 
-        public TaoSanPham GetSanPham()
-        {
-            return taoSP;
-        }
+        public void SetSoLuong() => taoSP.AddInfo(soLuong.ToString());
+
+        public TaoSanPham GetSanPham() => taoSP;
     }
 }
