@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using hicaphe2.Models;
+using hicaphe2.Models.Builder_Pattern;
 
 namespace hicaphe2.Controllers
 {
-    public class GioHangController : Controller
+    public class GioHangController : Controller 
     {
-
+        SanXuatSP sanXuatSP = new SanXuatSP(); // ---
         public List<MatHangMua> LayGioHang()
         {
             List<MatHangMua> gioHang = Session["GioHang"] as List<MatHangMua>;
@@ -21,22 +24,43 @@ namespace hicaphe2.Controllers
             }
             return gioHang;
         }
-
         public ActionResult ThemSanPhamVaoGio(string MaSP)
         {
             List<MatHangMua> gioHang = LayGioHang();
             MatHangMua sanPham = gioHang.FirstOrDefault(s => s.MaSP == MaSP);
             if (sanPham == null)
             {
+                IdentifyProductType(sanPham, MaSP, out TaoSanPham taoSanPham);
                 sanPham = new MatHangMua(MaSP);
-                gioHang.Add(sanPham);
+                gioHang.Add(taoSanPham.matHangMua());
             }
             else
             {
                 sanPham.SoLuong++;
             }
-            return RedirectToAction("Details", "HiCaPhe", new { id = MaSP });
 
+            return RedirectToAction("Details", "HiCaPhe", new { id = MaSP });
+        }
+        void IdentifyProductType(MatHangMua sanPham, string MaSP, out TaoSanPham taoSanPham)
+        {
+            taoSanPham = new TaoSanPham();
+            switch (sanPham.Loai)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    IBuilderSanPham drink = new Drink(MaSP);
+                    sanXuatSP.Constructor(drink);
+                    taoSanPham = drink.GetSanPham();
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                    IBuilderSanPham food = new Food(MaSP);
+                    sanXuatSP.Constructor(food);
+                    taoSanPham = food.GetSanPham();
+                    break;
+            }
         }
 
         private int TinhTongSL()
@@ -80,7 +104,8 @@ namespace hicaphe2.Controllers
             var sanpham = gioHang.FirstOrDefault(s => s.MaSP == MaSP);
             if (sanpham != null)
             {
-                gioHang.RemoveAll(s => s.MaSP == MaSP);
+                IdentifyProductType(sanpham, MaSP, out TaoSanPham taoSanPham);
+                gioHang.RemoveAll(s => s.MaSP == taoSanPham.matHangMua().MaSP);
                 return RedirectToAction("HienThiGioHang");
             }
             if (gioHang.Count == 0)
