@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using hicaphe2.Models;
+using hicaphe2.Models.Builder_Pattern;
 
 namespace hicaphe2.Controllers
 {
@@ -24,6 +26,15 @@ namespace hicaphe2.Controllers
 
         public ActionResult ThemSanPhamVaoGio(string MaSP)
         {
+            //GioHang director = new GioHang();
+
+            //IBuilderMatHang matHang = new MatHang(MaSP);
+            //// Making Car
+            //director.Construct(matHang);
+            //SanPham sp1 = matHang.GetSanPham();
+            //sp1.GetSanPham();
+
+
             List<MatHangMua> gioHang = LayGioHang();
             MatHangMua sanPham = gioHang.FirstOrDefault(s => s.MaSP == MaSP);
             if (sanPham == null)

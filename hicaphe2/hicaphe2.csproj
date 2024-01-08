@@ -134,6 +134,10 @@
     <Compile Include="Models\ADMIN.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Builder Pattern\MatHang.cs" />
+    <Compile Include="Models\Builder Pattern\GioHang.cs" />
+    <Compile Include="Models\Builder Pattern\IBuilderMatHang.cs" />
+    <Compile Include="Models\Builder Pattern\SanPham.cs" />
     <Compile Include="Models\CTDATHANG.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
@@ -165,7 +169,7 @@
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Factory Method Pattern\ILogin.cs" />
-    <Compile Include="Models\MatHangMua.cs" />
+    <Compile Include="Models\Builder Pattern\MatHangMua.cs" />
     <Compile Include="Models\SANPHAM.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
