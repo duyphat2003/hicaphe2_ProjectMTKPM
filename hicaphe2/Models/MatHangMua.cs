@@ -34,15 +34,5 @@ namespace hicaphe2.Models
             this.Dongia = double.Parse(sanpham.Dongia.ToString());
             this.SoLuong = 1;
         }
-
-        public MatHangMua(string maSP, string tenSP, string hinhminhhoa, string kichthuoc, double dongia, int soLuong)
-        {
-            MaSP = maSP;
-            TenSP = tenSP;
-            Hinhminhhoa = hinhminhhoa;
-            Kichthuoc = kichthuoc;
-            Dongia = dongia;
-            SoLuong = soLuong;
-        }
     }
 }
