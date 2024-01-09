@@ -1,4 +1,5 @@
 ﻿using hicaphe2.Models;
+using hicaphe2.Models.Decorator_Pattern;
 using hicaphe2.Models.Factory_Method_Pattern;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,38 @@ namespace hicaphe2.Controllers
                 var khachhang = HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.FirstOrDefault(k => k.Email == kh.Email);
                 if (khachhang != null)
                     ModelState.AddModelError(string.Empty, "Đã có người đăng ký tên này");
+
                 if (ModelState.IsValid)
                 {
-                    HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.Add(kh);
+                    TAIKHOANKHACHHANG khg = new TAIKHOANKHACHHANG();
+                    AbstractKhachHang khachHang = new ConcreteKhachHang();
+                    khachHang.MakeKhachHang();
+
+                    // Họ và tên
+                    khachHang = new HoTenKHDecorator(khachHang, kh.HoTenKH, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    // Email
+                    khachHang = new EmailKHDecorator(khachHang, kh.Email, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    // Địa chỉ
+                    khachHang = new DiaChiKHDecorator(khachHang, kh.DiachiKH, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    // Số điện thoại
+                    khachHang = new SDTKHDecorator(khachHang, kh.SDT, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    // Mật khẩu
+                    khachHang = new MatKhauKHDecorator(khachHang, kh.Matkhau, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    // Ngày sinh
+                    khachHang = new NgaySinhKHDecorator(khachHang, kh.Ngaysinh, khg);
+                    khg = khachHang.MakeKhachHang();
+
+                    HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.Add(khg);
                     HiCaPheDatabase.Instance.database.SaveChanges();
                 }
                 else

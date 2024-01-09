@@ -143,6 +143,15 @@
     <Compile Include="Models\CTDATHANG.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Decorator Pattern\AbstractDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\AbstractKhachHang.cs" />
+    <Compile Include="Models\Decorator Pattern\ConcreteKhachHang.cs" />
+    <Compile Include="Models\Decorator Pattern\DiaChiKHDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\EmailKHDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\HoTenKHDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\MatKhauKHDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\NgaySinhKHDecorator.cs" />
+    <Compile Include="Models\Decorator Pattern\SDTKHDecorator.cs" />
     <Compile Include="Models\Factory Method Pattern\Admin.cs" />
     <Compile Include="Models\Factory Method Pattern\DangNhapAdmin.cs" />
     <Compile Include="Models\Factory Method Pattern\DangNhapFactory.cs" />
