@@ -70,9 +70,19 @@
             border-radius: 5px;
         }
     </style>
-    <tr>
-        <td colspan="2" style="text-align: center;">
-            @Html.ActionLink("ĐỒNG Ý ĐẶT HÀNG", "DongYDatHang", null, new { @class = "btn btn-primary btn-lg custom-btn" })
-        </td>
-    </tr>
 </table>
+<tr>
+    <h2 style="text-align:center">CHỌN PHƯƠNG THỨC THANH TOÁN</h2>
+    <div style="text-align:center;">
+        @using (Html.BeginForm("DongYDatHang", "GioHang", FormMethod.Post))
+        {
+            <label for="paymentMethod"></label>
+            <select class="form-control" name="paymentMethod" id="paymentMethod">
+                <option value="OnlinePayment">Thanh toán online</option>
+                <option value="CashPayment">Thanh toán bằng tiền mặt</option>
+            </select>
+            <br />
+            <button type="submit" class="btn btn-primary btn-lg custom-btn">ĐỒNG Ý ĐẶT HÀNG</button>
+        }
+    </div>
+</tr>

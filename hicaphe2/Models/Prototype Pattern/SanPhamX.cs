@@ -12,7 +12,11 @@ using System.Web.Mvc;
 
 namespace hicaphe2.Models
 {
-    public abstract class SanPhamX : Controller
+
+    ///<summary>
+    /// Prototype Pattern
+    /// </summary>
+    public abstract class SanPhamX
     {
         public int productEachPage = 10;
         public IPagedList<SANPHAM> SetSanPham(int? page, string timkiemchuoi, double minPrice, double maxPrice)
@@ -39,7 +43,37 @@ namespace hicaphe2.Models
             }
 
             return sanphams.OrderBy(sanpham => sanpham.MaSP).ToPagedList(pageNum, pageSize);
-        }   
+        }
+
+        #region Proxy Pattern
+        public List<SANPHAM> SetSanPham(int? page, string timkiemchuoi, double minPrice, double maxPrice, out int pageSize, out int pageNum)
+        {
+            var sanphams = HiCaPheDatabase.Instance.database.SANPHAM.ToList();
+            //Tạo biến cho biết số sách mỗi trang
+            pageSize = productEachPage;
+            //Tạo biến số trang
+            
+            pageNum = (page ?? 1);
+
+            //Tìm kiếm chuỗi truy vấn theo NamePro, nếu chuỗi truy vấn SearchString khác rỗng, null
+            if (!String.IsNullOrEmpty(timkiemchuoi) && timkiemchuoi.Trim().Length != 0)
+            {
+                String lowerCaseSearchText = timkiemchuoi.ToLower();
+                sanphams = sanphams.Where(s => s.TenSP.ToLower().Contains(timkiemchuoi)).ToList();
+            }
+            // Tìm kiếm chuỗi truy vấn theo đơn giá
+            if (minPrice < maxPrice && minPrice >= 0 && maxPrice >= 0)
+            {
+                if (minPrice >= 0 && maxPrice > 0)
+                {
+                    sanphams = sanphams.OrderByDescending(x => x.Dongia).Where(p => (double)p.Dongia >= minPrice && (double)p.Dongia <= maxPrice).ToList();
+                }
+            }
+
+            return sanphams.OrderBy(sanpham => sanpham.MaSP).ToList();
+        }
+        #endregion
+
         public abstract SanPhamX Clone();
     }
 }

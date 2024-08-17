@@ -8,11 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using hicaphe2.Models;
 using hicaphe2.Models.Builder_Pattern;
+using hicaphe2.Models.StrategyPattern;
+using hicaphe2.Models.vistor_pattern;
+using Stripe;
 
 namespace hicaphe2.Controllers
 {
     public class GioHangController : Controller 
     {
+
         SanXuatSP sanXuatSP = new SanXuatSP(); // ---
         public List<MatHangMua> LayGioHang()
         {
@@ -24,6 +28,8 @@ namespace hicaphe2.Controllers
             }
             return gioHang;
         }
+
+        #region Nhật
         public ActionResult ThemSanPhamVaoGio(string MaSP)
         {
             List<MatHangMua> gioHang = LayGioHang();
@@ -31,6 +37,25 @@ namespace hicaphe2.Controllers
             if (sanPham == null)
             {
                 sanPham = new MatHangMua(MaSP);
+
+                #region Visitor Pattern
+                if(drinkCombo == null)
+                    drinkCombo = new DrinkCombo();
+
+                drinkCombo.AddDrink(new DrinkInfo()
+                {
+                    TenSP = sanPham.TenSP,
+                    MaSP = sanPham.MaSP,
+                    Hinhminhhoa = sanPham.Hinhminhhoa,
+                    Kichthuoc = sanPham.Kichthuoc,
+                    SoLuong = sanPham.SoLuong,
+                    Dongia = sanPham.Dongia,
+                    Loai = sanPham.Loai,
+                });
+                drinkVisitor = new DrinkPriceVisitor();
+                drinkVisitor.Visit(drinkCombo);
+                #endregion
+
                 TaoSanPham taoSanPham = new TaoSanPham();
                 switch (sanPham.Loai)
                 {
@@ -58,6 +83,8 @@ namespace hicaphe2.Controllers
 
             return RedirectToAction("Details", "HiCaPhe", new { id = MaSP });
         }
+        #endregion
+
         private int TinhTongSL()
         {
             int tongSL = 0;
@@ -76,15 +103,43 @@ namespace hicaphe2.Controllers
             return TongTien;
         }
 
+
+        #region Nhật
+        DrinkCombo drinkCombo;
+        IDrinkVisitor drinkVisitor;
         public ActionResult HienThiGioHang()
         {
             List<MatHangMua> gioHang = LayGioHang();
+
+            #region Visitor Pattern
+            if (drinkCombo == null)
+                drinkCombo = new DrinkCombo();
+
+            foreach (var mathang in gioHang)
+            {
+                drinkCombo.AddDrink(new DrinkInfo()
+                {
+                    TenSP = mathang.TenSP,
+                    MaSP = mathang.MaSP,
+                    Hinhminhhoa = mathang.Hinhminhhoa,
+                    Kichthuoc = mathang.Kichthuoc,
+                    SoLuong = mathang.SoLuong,
+                    Dongia = mathang.Dongia,
+                    Loai = mathang.Loai,
+                });
+            }
+
+            drinkVisitor = new DrinkPriceVisitor();
+            drinkVisitor.Visit(drinkCombo);
+            #endregion
             if (gioHang == null || gioHang.Count == 0)
                 return RedirectToAction("Index", "HiCaPhe");
             ViewBag.TongSL = TinhTongSL();
             ViewBag.TongTien = TinhTongTien();
             return View(gioHang);
         }
+        #endregion
+
         public ActionResult GioHangPartial()
         {
            
@@ -93,12 +148,16 @@ namespace hicaphe2.Controllers
             return PartialView();
         }
 
+        #region Nhật
         public ActionResult XoaMatHang(string MaSP)
         {
             List<MatHangMua> gioHang = LayGioHang();
             var sanpham = gioHang.FirstOrDefault(s => s.MaSP == MaSP);
             if (sanpham != null)
             {
+                IDeleteDrinkVisitor RemoveDrink = new DeleteDrinkVisitor();
+                RemoveDrink.Visit(drinkCombo, MaSP);
+
                 gioHang.RemoveAll(s => s.MaSP == sanpham.MaSP);
                 return RedirectToAction("HienThiGioHang");
             }
@@ -106,6 +165,7 @@ namespace hicaphe2.Controllers
                 return RedirectToAction("Index", "HiCaPhe");
             return RedirectToAction("HienThiGioHang");
         }
+        #endregion
 
         public ActionResult CapNhatMatHang(string MaSP, int SoLuong)
         {
@@ -128,51 +188,135 @@ namespace hicaphe2.Controllers
             return View(gioHang);
         }
 
+        private readonly IPaymentStrategy _paymentStrategy;
 
-        
-        public ActionResult DongYDatHang()
+        public GioHangController()
         {
-            TAIKHOANKHACHHANG khach = Session["TaiKhoan"] as TAIKHOANKHACHHANG;
+            var factory = new PaymentStrategyFactory();
+            _paymentStrategy = factory.CreatePaymentStrategy("OnlinePayment");
+        }
+
+
+        [HttpGet]
+        public ActionResult CreateCheckOutSession()
+        {
+            // Lấy thông tin giỏ hàng và đơn hàng
             List<MatHangMua> gioHang = LayGioHang();
+            TAIKHOANKHACHHANG khach = Session["TaiKhoan"] as TAIKHOANKHACHHANG;
+            DONDATHANG order = new DONDATHANG();
+            order.MaTK = khach.MaTK;
+            order.NgayDH = DateTime.Now;
+            order.Trigia = (decimal)TinhTongTien();
+            order.Dagiao = false;
+            order.Tennguoinhan = khach.HoTenKH;
+            order.Diachinhan = khach.DiachiKH;
+            order.Dienthoainhan = khach.SDT;
+            order.HTThanhtoan = false;
+            order.HTGiaohang = false;
 
+            // Thực hiện thanh toán sử dụng chiến lược thanh toán (Stripe)
+            _paymentStrategy.ProcessPayment(gioHang, order);
 
-
-            DONDATHANG DonHang = new DONDATHANG();
-            DonHang.MaTK = khach.MaTK;
-            DonHang.NgayDH = DateTime.Now;
-            DonHang.Trigia = (decimal)TinhTongTien();
-            DonHang.Dagiao = false;
-            DonHang.Tennguoinhan = khach.HoTenKH;
-            DonHang.Diachinhan = khach.DiachiKH;
-            DonHang.Dienthoainhan = khach.SDT;
-            DonHang.HTThanhtoan = false;
-            DonHang.HTGiaohang = false;
-
-
-
-            HiCaPheDatabase.Instance.database.DONDATHANG.Add(DonHang);
-            HiCaPheDatabase.Instance.database.SaveChanges();
-
-
+            // Lưu thông tin đơn hàng vào cơ sở dữ liệu
 
             foreach (var sanpham in gioHang)
             {
                 CTDATHANG chitiet = new CTDATHANG();
-                chitiet.SODH = DonHang.SODH;
+                chitiet.SODH = order.SODH;
                 chitiet.MaSP = sanpham.MaSP;
                 chitiet.Soluong = sanpham.SoLuong;
                 chitiet.Dongia = (decimal)sanpham.Dongia;
                 HiCaPheDatabase.Instance.database.CTDATHANG.Add(chitiet);
             }
-            HiCaPheDatabase.Instance.database.SaveChanges();
 
             //Xóa giỏ hàng
             Session["GioHang"] = null;
-            return RedirectToAction("HoanThanhDonDatHang");
+
+            // Chuyển hướng đến URL của trang thanh toán của Stripe
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DongYDatHang(string paymentMethod)
+        {
+            // Lấy thông tin khách hàng và giỏ hàng
+            TAIKHOANKHACHHANG khach = Session["TaiKhoan"] as TAIKHOANKHACHHANG;
+            List<MatHangMua> gioHang = LayGioHang();
+
+            DONDATHANG order = new DONDATHANG();
+            order.MaTK = khach.MaTK;
+            order.NgayDH = DateTime.Now;
+            order.Trigia = (decimal)TinhTongTien();
+            order.Dagiao = false;
+            order.Tennguoinhan = khach.HoTenKH;
+            order.Diachinhan = khach.DiachiKH;
+            order.Dienthoainhan = khach.SDT;
+            order.HTThanhtoan = false;
+            order.HTGiaohang = false;
+
+            IPaymentStrategy paymentStrategy;
+
+
+            if (paymentMethod == "OnlinePayment")
+            {
+                paymentStrategy = new ThanhToanOnline();
+                paymentStrategy.ProcessPayment(gioHang, order);
+                return new HttpStatusCodeResult(303);
+
+            }
+            else
+            {
+                paymentStrategy = new ThanhToanTienMat();
+                paymentStrategy.ProcessPayment(gioHang, order);
+                return RedirectToAction("HoanThanhDonDathang", "GioHang");
+            }
+
         }
 
         public ActionResult HoanThanhDonDatHang()
         {
+            // Kiểm tra xem người dùng đã chọn thanh toán online hay không
+            if (Session["PhuongThucThanhToan"] != null && Session["PhuongThucThanhToan"].ToString() == "OnlinePayment")
+            {
+                var factory = new PaymentStrategyFactory();
+                IPaymentStrategy thanhToanOnline = factory.CreatePaymentStrategy("OnlinePayment");
+
+                // Thực hiện thanh toán online chỉ khi người dùng chọn thanh toán online
+                List<MatHangMua> gioHang = LayGioHang();
+                double tongTien = TinhTongTien(); // Tính tổng tiền đơn hàng
+
+                TAIKHOANKHACHHANG khach = Session["TaiKhoan"] as TAIKHOANKHACHHANG;
+                DONDATHANG order = new DONDATHANG();
+                order.MaTK = khach.MaTK;
+                order.NgayDH = DateTime.Now;
+                order.Trigia = (decimal)TinhTongTien();
+                order.Dagiao = false;
+                order.Tennguoinhan = khach.HoTenKH;
+                order.Diachinhan = khach.DiachiKH;
+                order.Dienthoainhan = khach.SDT;
+                order.HTThanhtoan = false;
+                order.HTGiaohang = false;
+
+                foreach (var sanpham in gioHang)
+                {
+                    CTDATHANG chitiet = new CTDATHANG();
+                    chitiet.SODH = order.SODH;
+                    chitiet.MaSP = sanpham.MaSP;
+                    chitiet.Soluong = sanpham.SoLuong;
+                    chitiet.Dongia = (decimal)sanpham.Dongia;
+                    HiCaPheDatabase.Instance.database.CTDATHANG.Add(chitiet);
+                }
+
+                HiCaPheDatabase.Instance.database.DONDATHANG.Add(order);
+                HiCaPheDatabase.Instance.database.SaveChanges();
+
+                // Chuyển hướng đến phương thức thanh toán online
+                thanhToanOnline.ProcessPayment(gioHang, order);
+                return new HttpStatusCodeResult(303);
+            }
+
+            Session["GioHang"] = null;
+            // Nếu người dùng chọn thanh toán khác, hiển thị trang hoàn thành đơn đặt hàng
             return View();
         }
         public ActionResult Index()

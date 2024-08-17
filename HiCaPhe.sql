@@ -5,7 +5,18 @@ Create database HiCaPhe
 Go
 Use HiCaPhe
 GO
-
+--CREATE TABLE NGUYENLIEU (
+--MaNL INT IDENTITY(1,1),
+--MaSP INT IDENTITY(1,1),
+--TenNL nvarchar(50) NOT NULL,
+--HinhAnh VARCHAR(50),
+--DonGia Money check (DonGia>=0),
+--DonViTinh NVARCHAR(50),
+--SoLuongTon INT CHECK(SoLuongTon>=0),
+--NgayNhap SMALLDATETIME,
+--CONSTRAINT PK_NguyenLieu PRIMARY KEY(MaNL)
+--)
+--GO
 Create Table LOAISP
 (
 MaLoaiSP int Identity(1,1),
@@ -29,18 +40,7 @@ CONSTRAINT PK_SanPham PRIMARY KEY (MaSP)
 )
 GO
 
---CREATE TABLE NGUYENLIEU (
---MaNL INT IDENTITY(1,1),
---MaSP INT IDENTITY(1,1),
---TenNL nvarchar(50) NOT NULL,
---HinhAnh VARCHAR(50),
---DonGia Money check (DonGia>=0),
---DonViTinh NVARCHAR(50),
---SoLuongTon INT CHECK(SoLuongTon>=0),
---NgayNhap SMALLDATETIME,
---CONSTRAINT PK_NguyenLieu PRIMARY KEY(MaNL)
---)
---GO
+
 
 CREATE TABLE TAIKHOANKHACHHANG (
 MaTK INT IDENTITY(1,1),
@@ -203,3 +203,431 @@ CREATE TABLE ADMIN
 
 INSERT INTO ADMIN VALUES('admin', 'admin', N'Nguyễn Văn A', 'ADMIN') 
 INSERT INTO ADMIN VALUES('user', 'user', N'Nguyễn Văn B', 'ADMIN')
+
+
+
+CREATE OR REPLACE PROCEDURE InsertLoaiSP(
+    p_TenLoaiSP IN NVARCHAR2
+) AS
+BEGIN
+    INSERT INTO LOAISP (TenLoaiSP)
+    VALUES (p_TenLoaiSP);
+END;
+
+CREATE OR REPLACE PROCEDURE UpdateLoaiSP(
+    p_MaLoaiSP IN NUMBER,
+    p_TenLoaiSP IN NVARCHAR2
+) AS
+BEGIN
+    UPDATE LOAISP
+    SET TenLoaiSP = p_TenLoaiSP
+    WHERE MaLoaiSP = p_MaLoaiSP;
+END;
+
+CREATE OR REPLACE PROCEDURE DeleteLoaiSP(
+    p_MaLoaiSP IN NUMBER
+) AS
+BEGIN
+    DELETE FROM LOAISP
+    WHERE MaLoaiSP = p_MaLoaiSP;
+END;
+
+CREATE OR REPLACE PROCEDURE GetLoaiSP AS
+BEGIN
+    FOR rec IN (SELECT * FROM LOAISP) LOOP
+        DBMS_OUTPUT.PUT_LINE('MaLoaiSP: ' || rec.MaLoaiSP || ', TenLoaiSP: ' || rec.TenLoaiSP);
+    END LOOP;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE InsertSanPham(
+    p_MaSP IN VARCHAR2,
+    p_TenSP IN NVARCHAR2,
+    p_Kichthuoc IN VARCHAR2,
+    p_Donvitinh IN NVARCHAR2,
+    p_Dongia IN NUMBER,
+    p_Mota IN NCLOB,
+    p_Hinhminhhoa IN VARCHAR2,
+    p_MaLoaiSP IN NUMBER,
+    p_Soluongban IN NUMBER
+) AS
+BEGIN
+    INSERT INTO SANPHAM (MaSP, TenSP, Kichthuoc, Donvitinh, Dongia, Mota, Hinhminhhoa, MaLoaiSP, Soluongban)
+    VALUES (p_MaSP, p_TenSP, p_Kichthuoc, p_Donvitinh, p_Dongia, p_Mota, p_Hinhminhhoa, p_MaLoaiSP, p_Soluongban);
+END;
+
+CREATE OR REPLACE PROCEDURE UpdateSanPham(
+    p_MaSP IN VARCHAR2,
+    p_TenSP IN NVARCHAR2,
+    p_Kichthuoc IN VARCHAR2,
+    p_Donvitinh IN NVARCHAR2,
+    p_Dongia IN NUMBER,
+    p_Mota IN NCLOB,
+    p_Hinhminhhoa IN VARCHAR2,
+    p_MaLoaiSP IN NUMBER,
+    p_Soluongban IN NUMBER
+) AS
+BEGIN
+    UPDATE SANPHAM
+    SET TenSP = p_TenSP,
+        Kichthuoc = p_Kichthuoc,
+        Donvitinh = p_Donvitinh,
+        Dongia = p_Dongia,
+        Mota = p_Mota,
+        Hinhminhhoa = p_Hinhminhhoa,
+        MaLoaiSP = p_MaLoaiSP,
+        Soluongban = p_Soluongban
+    WHERE MaSP = p_MaSP;
+END;
+
+CREATE OR REPLACE PROCEDURE DeleteSanPham(
+    p_MaSP IN VARCHAR2
+) AS
+BEGIN
+    DELETE FROM SANPHAM
+    WHERE MaSP = p_MaSP;
+END;
+
+CREATE OR REPLACE PROCEDURE GetSanPham AS
+BEGIN
+    FOR rec IN (SELECT * FROM SANPHAM) LOOP
+        DBMS_OUTPUT.PUT_LINE('MaSP: ' || rec.MaSP || ', TenSP: ' || rec.TenSP || ', Kichthuoc: ' || rec.Kichthuoc || ', ...'); -- Add other columns as needed
+    END LOOP;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE InsertKhachHang(
+    p_HoTenKH IN NVARCHAR2,
+    p_Email IN VARCHAR2,
+    p_DiachiKH IN NVARCHAR2,
+    p_SDT IN VARCHAR2,
+    p_Matkhau IN VARCHAR2,
+    p_Ngaysinh IN DATE
+) AS
+BEGIN
+    INSERT INTO TAIKHOANKHACHHANG (HoTenKH, Email, DiachiKH, SDT, Matkhau, Ngaysinh)
+    VALUES (p_HoTenKH, p_Email, p_DiachiKH, p_SDT, p_Matkhau, p_Ngaysinh);
+END;
+
+CREATE OR REPLACE PROCEDURE UpdateKhachHang(
+    p_MaTK IN NUMBER,
+    p_HoTenKH IN NVARCHAR2,
+    p_Email IN VARCHAR2,
+    p_DiachiKH IN NVARCHAR2,
+    p_SDT IN VARCHAR2,
+    p_Matkhau IN VARCHAR2,
+    p_Ngaysinh IN DATE
+) AS
+BEGIN
+    UPDATE TAIKHOANKHACHHANG
+    SET HoTenKH = p_HoTenKH,
+        Email = p_Email,
+        DiachiKH = p_DiachiKH,
+        SDT = p_SDT,
+        Matkhau = p_Matkhau,
+        Ngaysinh = p_Ngaysinh
+    WHERE MaTK = p_MaTK;
+END;
+
+CREATE OR REPLACE PROCEDURE DeleteKhachHang(
+    p_MaTK IN NUMBER
+) AS
+BEGIN
+    DELETE FROM TAIKHOANKHACHHANG
+    WHERE MaTK = p_MaTK;
+END;
+
+
+CREATE OR REPLACE PROCEDURE GetKhachHang AS
+BEGIN
+    FOR rec IN (SELECT * FROM TAIKHOANKHACHHANG) LOOP
+        DBMS_OUTPUT.PUT_LINE('MaTK: ' || rec.MaTK || ', HoTenKH: ' || rec.HoTenKH || ', Email: ' || rec.Email || ', ...'); -- Add other columns as needed
+    END LOOP;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE InsertCTDatHang(
+    p_SODH IN NUMBER,
+    p_Soluong IN NUMBER,
+    p_MaSP IN VARCHAR2,
+    p_Dongia IN NUMBER
+) AS
+BEGIN
+    INSERT INTO CTDATHANG (SODH, Soluong, MaSP, Dongia)
+    VALUES (p_SODH, p_Soluong, p_MaSP, p_Dongia);
+END;
+
+CREATE OR REPLACE PROCEDURE UpdateCTDatHang(
+    p_SODH IN NUMBER,
+    p_MaSP IN VARCHAR2,
+    p_Soluong IN NUMBER,
+    p_Dongia IN NUMBER
+) AS
+BEGIN
+    UPDATE CTDATHANG
+    SET Soluong = p_Soluong,
+        Dongia = p_Dongia
+    WHERE SODH = p_SODH AND MaSP = p_MaSP;
+END;
+
+CREATE OR REPLACE PROCEDURE DeleteCTDatHang(
+    p_SODH IN NUMBER,
+    p_MaSP IN VARCHAR2
+) AS
+BEGIN
+    DELETE FROM CTDATHANG
+    WHERE SODH = p_SODH AND MaSP = p_MaSP;
+END;
+
+
+CREATE OR REPLACE PROCEDURE GetCTDatHang AS
+BEGIN
+    FOR rec IN (SELECT * FROM CTDATHANG) LOOP
+        DBMS_OUTPUT.PUT_LINE('SODH: ' || rec.SODH || ', MaSP: ' || rec.MaSP || ', Soluong: ' || rec.Soluong || ', ...'); -- Add other columns as needed
+    END LOOP;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE InsertDonDatHang(
+    p_MaTK IN NUMBER,
+    p_NgayDH IN DATE,
+    p_Dagiao IN NUMBER,
+    p_Dahuy IN NUMBER,
+    p_Ngaygiaohang IN DATE,
+    p_Tennguoinhan IN NVARCHAR2,
+    p_Diachinhan IN NVARCHAR2,
+    p_Trigia IN NUMBER,
+    p_Dienthoainhan IN VARCHAR2,
+    p_HTThanhtoan IN NUMBER,
+    p_HTGiaohang IN NUMBER
+) AS
+BEGIN
+    INSERT INTO DONDATHANG (MaTK, NgayDH, Dagiao, Dahuy, Ngaygiaohang, Tennguoinhan, Diachinhan, Trigia, Dienthoainhan, HTThanhtoan, HTGiaohang)
+    VALUES (p_MaTK, p_NgayDH, p_Dagiao, p_Dahuy, p_Ngaygiaohang, p_Tennguoinhan, p_Diachinhan, p_Trigia, p_Dienthoainhan, p_HTThanhtoan, p_HTGiaohang);
+END;
+
+CREATE OR REPLACE PROCEDURE UpdateDonDatHang(
+    p_SODH IN NUMBER,
+    p_MaTK IN NUMBER,
+    p_NgayDH IN DATE,
+    p_Dagiao IN NUMBER,
+    p_Dahuy IN NUMBER,
+    p_Ngaygiaohang IN DATE,
+    p_Tennguoinhan IN NVARCHAR2,
+    p_Diachinhan IN NVARCHAR2,
+    p_Trigia IN NUMBER,
+    p_Dienthoainhan IN VARCHAR2,
+    p_HTThanhtoan IN NUMBER,
+    p_HTGiaohang IN NUMBER
+) AS
+BEGIN
+    UPDATE DONDATHANG
+    SET MaTK = p_MaTK,
+        NgayDH = p_NgayDH,
+        Dagiao = p_Dagiao,
+        Dahuy = p_Dahuy,
+        Ngaygiaohang = p_Ngaygiaohang,
+        Tennguoinhan = p_Tennguoinhan,
+        Diachinhan = p_Diachinhan,
+        Trigia = p_Trigia,
+        Dienthoainhan = p_Dienthoainhan,
+        HTThanhtoan = p_HTThanhtoan,
+        HTGiaohang = p_HTGiaohang
+    WHERE SODH = p_SODH;
+END;
+
+CREATE OR REPLACE PROCEDURE DeleteDonDatHang(
+    p_SODH IN NUMBER
+) AS
+BEGIN
+    DELETE FROM DONDATHANG
+    WHERE SODH = p_SODH;
+END;
+
+CREATE OR REPLACE PROCEDURE GetDonDatHang AS
+BEGIN
+    FOR rec IN (SELECT * FROM DONDATHANG) LOOP
+        DBMS_OUTPUT.PUT_LINE('SODH: ' || rec.SODH || ', MaTK: ' || rec.MaTK || ', NgayDH: ' || rec.NgayDH || ', ...'); -- Add other columns as needed
+    END LOOP;
+END;
+
+
+CREATE OR REPLACE TRIGGER CheckPrimaryKey_LOAISP
+INSTEAD OF INSERT OR UPDATE ON LOAISP
+DECLARE
+    v_RecordCount NUMBER;
+BEGIN
+    -- Check the number of records being inserted or updated
+    SELECT COUNT(*) INTO v_RecordCount FROM inserted;
+
+    IF v_RecordCount > 1 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot insert or update multiple records into LOAISP at once.');
+    END IF;
+
+    -- Check for duplicate MaLoaiSP values
+    IF (SELECT COUNT(*) FROM LOAISP WHERE MaLoaiSP IN (SELECT MaLoaiSP FROM inserted)) > 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Duplicate MaLoaiSP values are not allowed in LOAISP.');
+    END IF;
+
+    -- Proceed with the actual insert or update statement
+    FOR rec IN (SELECT * FROM inserted) LOOP
+        -- Use appropriate logic for insert or update based on your requirements
+        IF rec.operation = 'INSERT' THEN
+            INSERT INTO LOAISP (MaLoaiSP, TenLoaiSP)
+            VALUES (rec.MaLoaiSP, rec.TenLoaiSP);
+        ELSIF rec.operation = 'UPDATE' THEN
+            UPDATE LOAISP
+            SET TenLoaiSP = rec.TenLoaiSP
+            WHERE MaLoaiSP = rec.MaLoaiSP;
+        END IF;
+    END LOOP;
+END;
+
+
+CREATE OR REPLACE TRIGGER CheckForeignKey_SANPHAM
+INSTEAD OF INSERT OR UPDATE ON SANPHAM
+DECLARE
+    v_RecordCount NUMBER;
+BEGIN
+    -- Check the number of records being inserted or updated
+    SELECT COUNT(*) INTO v_RecordCount FROM inserted;
+
+    IF v_RecordCount > 0 THEN
+        -- Check for foreign key constraint violation
+        IF (SELECT COUNT(*) FROM inserted WHERE MaLoaiSP IS NOT NULL AND MaLoaiSP NOT IN (SELECT MaLoaiSP FROM LOAISP)) > 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Foreign key constraint violation: MaLoaiSP must exist in LOAISP.');
+        END IF;
+
+        -- Proceed with the actual insert or update statement
+        FOR rec IN (SELECT * FROM inserted) LOOP
+            -- Use appropriate logic for insert or update based on your requirements
+            IF rec.operation = 'INSERT' THEN
+                INSERT INTO SANPHAM (MaSP, TenSP, Kichthuoc, Donvitinh, Dongia, Mota, Hinhminhhoa, MaLoaiSP, Soluongban)
+                VALUES (rec.MaSP, rec.TenSP, rec.Kichthuoc, rec.Donvitinh, rec.Dongia, rec.Mota, rec.Hinhminhhoa, rec.MaLoaiSP, rec.Soluongban);
+            ELSIF rec.operation = 'UPDATE' THEN
+                UPDATE SANPHAM
+                SET TenSP = rec.TenSP,
+                    Kichthuoc = rec.Kichthuoc,
+                    Donvitinh = rec.Donvitinh,
+                    Dongia = rec.Dongia,
+                    Mota = rec.Mota,
+                    Hinhminhhoa = rec.Hinhminhhoa,
+                    MaLoaiSP = rec.MaLoaiSP,
+                    Soluongban = rec.Soluongban
+                WHERE MaSP = rec.MaSP;
+            END IF;
+        END LOOP;
+    END IF;
+END;
+
+
+
+CREATE OR REPLACE TRIGGER CheckConstraint_TAIKHOANKHACHHANG
+INSTEAD OF INSERT OR UPDATE ON TAIKHOANKHACHHANG
+DECLARE
+    v_RecordCount NUMBER;
+BEGIN
+    -- Check the number of records being inserted or updated
+    SELECT COUNT(*) INTO v_RecordCount FROM inserted;
+
+    IF v_RecordCount > 0 THEN
+        -- Check for constraint violation
+        IF (SELECT COUNT(*) FROM inserted WHERE Daduyet NOT IN (0, 1)) > 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Check constraint violation: Daduyet must be 0 or 1.');
+        END IF;
+
+        -- Proceed with the actual insert or update statement
+        FOR rec IN (SELECT * FROM inserted) LOOP
+            -- Use appropriate logic for insert or update based on your requirements
+            IF rec.operation = 'INSERT' THEN
+                INSERT INTO TAIKHOANKHACHHANG (HoTenKH, Email, DiachiKH, SDT, Matkhau, Ngaysinh, Daduyet)
+                VALUES (rec.HoTenKH, rec.Email, rec.DiachiKH, rec.SDT, rec.Matkhau, rec.Ngaysinh, rec.Daduyet);
+            ELSIF rec.operation = 'UPDATE' THEN
+                UPDATE TAIKHOANKHACHHANG
+                SET HoTenKH = rec.HoTenKH,
+                    Email = rec.Email,
+                    DiachiKH = rec.DiachiKH,
+                    SDT = rec.SDT,
+                    Matkhau = rec.Matkhau,
+                    Ngaysinh = rec.Ngaysinh,
+                    Daduyet = rec.Daduyet
+                WHERE MaTK = rec.MaTK;
+            END IF;
+        END LOOP;
+    END IF;
+END;
+
+
+CREATE OR REPLACE TRIGGER CheckConstraint_CTDATHANG
+INSTEAD OF INSERT OR UPDATE ON CTDATHANG
+DECLARE
+    v_RecordCount NUMBER;
+BEGIN
+    -- Check the number of records being inserted or updated
+    SELECT COUNT(*) INTO v_RecordCount FROM inserted;
+
+    IF v_RecordCount > 0 THEN
+        -- Check for constraint violation
+        IF (SELECT COUNT(*) FROM inserted WHERE Soluong <= 0) > 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Check constraint violation: Soluong must be greater than 0.');
+        END IF;
+
+        -- Proceed with the actual insert or update statement
+        FOR rec IN (SELECT * FROM inserted) LOOP
+            -- Use appropriate logic for insert or update based on your requirements
+            IF rec.operation = 'INSERT' THEN
+                INSERT INTO CTDATHANG (SODH, Soluong, MaSP, Dongia)
+                VALUES (rec.SODH, rec.Soluong, rec.MaSP, rec.Dongia);
+            ELSIF rec.operation = 'UPDATE' THEN
+                UPDATE CTDATHANG
+                SET Soluong = rec.Soluong,
+                    MaSP = rec.MaSP,
+                    Dongia = rec.Dongia
+                WHERE SODH = rec.SODH AND MaSP = rec.MaSP;
+            END IF;
+        END LOOP;
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER CheckConstraint_DONDATHANG
+INSTEAD OF INSERT OR UPDATE ON DONDATHANG
+DECLARE
+    v_RecordCount NUMBER;
+BEGIN
+    -- Check the number of records being inserted or updated
+    SELECT COUNT(*) INTO v_RecordCount FROM inserted;
+
+    IF v_RecordCount > 0 THEN
+        -- Check for constraint violation
+        IF (SELECT COUNT(*) FROM inserted WHERE Trigia <= 0) > 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Check constraint violation: Trigia must be greater than 0.');
+        END IF;
+
+        -- Proceed with the actual insert or update statement
+        FOR rec IN (SELECT * FROM inserted) LOOP
+            -- Use appropriate logic for insert or update based on your requirements
+            IF rec.operation = 'INSERT' THEN
+                INSERT INTO DONDATHANG (MaTK, NgayDH, Dagiao, Dahuy, Ngaygiaohang, Tennguoinhan, Diachinhan, Trigia, Dienthoainhan, HTThanhtoan, HTGiaohang)
+                VALUES (rec.MaTK, rec.NgayDH, rec.Dagiao, rec.Dahuy, rec.Ngaygiaohang, rec.Tennguoinhan, rec.Diachinhan, rec.Trigia, rec.Dienthoainhan, rec.HTThanhtoan, rec.HTGiaohang);
+            ELSIF rec.operation = 'UPDATE' THEN
+                UPDATE DONDATHANG
+                SET MaTK = rec.MaTK,
+                    NgayDH = rec.NgayDH,
+                    Dagiao = rec.Dagiao,
+                    Dahuy = rec.Dahuy,
+                    Ngaygiaohang = rec.Ngaygiaohang,
+                    Tennguoinhan = rec.Tennguoinhan,
+                    Diachinhan = rec.Diachinhan,
+                    Trigia = rec.Trigia,
+                    Dienthoainhan = rec.Dienthoainhan,
+                    HTThanhtoan = rec.HTThanhtoan,
+                    HTGiaohang = rec.HTGiaohang
+                WHERE SODH = rec.SODH;
+            END IF;
+        END LOOP;
+    END IF;
+END;

@@ -1,7 +1,12 @@
 ﻿@using hicaphe2.Models
+@using hicaphe2.Models.Composite_Pattern
 @using PagedList.Mvc
+
 @model PagedList.PagedList<SANPHAM>
 @{
+    #region Composite Pattern
+    List<IProduct> p = ViewBag.List;
+    #endregion
     ViewBag.Title = "Sản phẩm";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -58,8 +63,9 @@
 
 
 <table class="table">
-    @if (Model.Count == 0)
-    {    
+    @*@if (Model.Count == 0)*@ 
+    @if (p.Count == 0) //Composite Pattern
+    {
         <tr>
             <td colspan="10" class="text-danger">Không tìm thấy sản phẩm phù hợp.</td>
         </tr>
@@ -96,7 +102,8 @@
             </th>
             <th></th>
         </tr>
-        foreach (var item in Model)
+        //foreach (var item in Model)
+        foreach (var item in p) //Composite Pattern
         {
             <tr>
                 <td>

@@ -25,6 +25,8 @@ namespace hicaphe2.Models.Decorator_Pattern
         public bool Daduyet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DONDATHANG> DONDATHANG { get; set; }
+
+
         public abstract TAIKHOANKHACHHANG MakeKhachHang();
     }
 }

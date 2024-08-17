@@ -52,6 +52,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -65,11 +68,25 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Stripe.net, Version=43.19.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.43.19.0\lib\net461\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -131,6 +148,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Adapter Pattern\AP_CaPhe.cs" />
+    <Compile Include="Models\Adapter Pattern\HiCaPheDatabaseAdapter.cs" />
+    <Compile Include="Models\Adapter Pattern\ISanPhamDataProvider.cs" />
     <Compile Include="Models\ADMIN.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
@@ -140,6 +160,9 @@
     <Compile Include="Models\Builder Pattern\IBuilderSanPham.cs" />
     <Compile Include="Models\Builder Pattern\MatHangMua.cs" />
     <Compile Include="Models\Builder Pattern\TaoSanPham.cs" />
+    <Compile Include="Models\Composite Pattern\CompositeProduct.cs" />
+    <Compile Include="Models\Composite Pattern\IProduct.cs" />
+    <Compile Include="Models\Composite Pattern\Product.cs" />
     <Compile Include="Models\CTDATHANG.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
@@ -152,6 +175,9 @@
     <Compile Include="Models\Decorator Pattern\MatKhauKHDecorator.cs" />
     <Compile Include="Models\Decorator Pattern\NgaySinhKHDecorator.cs" />
     <Compile Include="Models\Decorator Pattern\SDTKHDecorator.cs" />
+    <Compile Include="Models\Facade Pattern\ProductFacade.cs" />
+    <Compile Include="Models\Facade Pattern\ProductImage.cs" />
+    <Compile Include="Models\Facade Pattern\ProductInfo.cs" />
     <Compile Include="Models\Factory Method Pattern\Admin.cs" />
     <Compile Include="Models\Factory Method Pattern\DangNhapAdmin.cs" />
     <Compile Include="Models\Factory Method Pattern\DangNhapFactory.cs" />
@@ -160,6 +186,14 @@
     </Compile>
     <Compile Include="Models\Factory Method Pattern\DangNhapUser.cs" />
     <Compile Include="Models\Factory Method Pattern\User.cs" />
+    <Compile Include="Models\Flyweight Pattern\Cake_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\Coffee_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\DrinkFactory_FLyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\Gift_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\IDrink_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\Nut_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\Other_Flyweight.cs" />
+    <Compile Include="Models\Flyweight Pattern\Tea_Flyweight.cs" />
     <Compile Include="Models\HiCaphe.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -175,6 +209,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HiCaphe.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Proxy Pattern\ConcreteSanPham.cs" />
+    <Compile Include="Models\Proxy Pattern\Proxy.cs" />
+    <Compile Include="Models\Proxy Pattern\SanPhamManagement.cs" />
     <Compile Include="Models\Singleton Pattern\HiCaPheDatabase.cs" />
     <Compile Include="Models\LOAISP.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
@@ -187,9 +224,23 @@
     <Compile Include="Models\Prototype Pattern\SanPhamFactory.cs" />
     <Compile Include="Models\Prototype Pattern\SanPhamHiCaPhe.cs" />
     <Compile Include="Models\Prototype Pattern\SanPhamX.cs" />
+    <Compile Include="Models\State Pattern\IOrderState.cs" />
+    <Compile Include="Models\State Pattern\Order.cs" />
+    <Compile Include="Models\State Pattern\PendingState.cs" />
+    <Compile Include="Models\Strategy Pattern\IPaymentStrategy.cs" />
+    <Compile Include="Models\Strategy Pattern\PaymentStrategyFactory.cs" />
+    <Compile Include="Models\Strategy Pattern\ThanhToanOnline.cs" />
+    <Compile Include="Models\Strategy Pattern\ThanhToanTienMat.cs" />
     <Compile Include="Models\TAIKHOANKHACHHANG.cs">
       <DependentUpon>HiCaphe.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Visitor Pattern\DeleteDrinkVisitor.cs" />
+    <Compile Include="Models\Visitor Pattern\DrinkCombo.cs" />
+    <Compile Include="Models\Visitor Pattern\DrinkInfo.cs" />
+    <Compile Include="Models\Visitor Pattern\DrinkPriceVisitor.cs" />
+    <Compile Include="Models\Visitor Pattern\IDeleteDrinkVisitor.cs" />
+    <Compile Include="Models\Visitor Pattern\IDrink.cs" />
+    <Compile Include="Models\Visitor Pattern\IDrinkVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

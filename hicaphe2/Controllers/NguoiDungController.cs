@@ -36,8 +36,9 @@ namespace hicaphe2.Controllers
                     ModelState.AddModelError(string.Empty, "Mật khẩu không được để trống");
                 if (string.IsNullOrEmpty(kh.SDT))
                     ModelState.AddModelError(string.Empty, "Số điện thoại không được để trống");
-
+                #region Singleton
                 var khachhang = HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.FirstOrDefault(k => k.Email == kh.Email);
+                #endregion
                 if (khachhang != null)
                     ModelState.AddModelError(string.Empty, "Đã có người đăng ký tên này");
 
@@ -71,8 +72,10 @@ namespace hicaphe2.Controllers
                     khachHang = new NgaySinhKHDecorator(khachHang, kh.Ngaysinh, khg);
                     khg = khachHang.MakeKhachHang();
 
+                    #region Singleton
                     HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.Add(khg);
                     HiCaPheDatabase.Instance.database.SaveChanges();
+                    #endregion
                 }
                 else
                 {
@@ -90,12 +93,13 @@ namespace hicaphe2.Controllers
             user = dangNhapFactory.CreateLogin();
         }
 
+
         [HttpGet]
         public ActionResult DangNhap()
         {
             String taiKhoan = Session["TaiKhoan"] as String;
             CreateLogin();
-            if (user.DangNhap(taiKhoan))
+            if (taiKhoan != null)
             {
                 return Redirect("/HiCaPhe/Index");
             }
@@ -107,13 +111,32 @@ namespace hicaphe2.Controllers
         public ActionResult DangNhap(TAIKHOANKHACHHANG x)
         {
             CreateLogin();
-            if (user.DangNhap(x, ref taikhoan))
+            if (ModelState.IsValid)
             {
-                Session["TaiKhoan"] = taikhoan;
-                return Redirect("/");
+                if (string.IsNullOrEmpty(x.Email))
+                    ModelState.AddModelError(string.Empty, "Tên đăng nhập không được để trống");
+                if (string.IsNullOrEmpty(x.Matkhau))
+                    ModelState.AddModelError(string.Empty, "Mật khẩu không được để trống");
+                if (ModelState.IsValid)
+                {
+                    //Tìm khách hàng có tên đăng nhập và password hợp lệ trong CSDL
+                    //var khach = HiCaPheDatabase.Instance.database.TAIKHOANKHACHHANG.FirstOrDefault(k => k.Email == x.Email && k.Matkhau == x.Matkhau);
+                    if (user.DangNhap(x, ref taikhoan))
+                    {
+
+                        // lưu vào session
+                        //taikhoan = khach;
+                        Session["TaiKhoan"] = taikhoan;
+                        return Redirect("/");
+                    }
+                    else
+                    {
+                        ViewBag.ThongBao = "Tên đăng nhập hoặc mật khẩu không đúng";
+
+                    }
+                }
             }
-            else
-                return View();
+            return View();
         }
         public ActionResult DangXuat()
         {
@@ -126,16 +149,19 @@ namespace hicaphe2.Controllers
             // Lấy mã tài khoản của người đăng nhập
             int maTaiKhoan = ((TAIKHOANKHACHHANG)Session["TaiKhoan"]).MaTK;
 
+            #region Singleton
             // Lấy danh sách đơn hàng của người đăng nhập từ cơ sở dữ liệu
             var danhSachDonHang = HiCaPheDatabase.Instance.database.DONDATHANG.Where(dh => dh.MaTK == maTaiKhoan).ToList();
+            #endregion
 
             return View(danhSachDonHang);
         }
         public ActionResult HuyDonHang(int soDonHang)
         {
+            #region Singleton
             // Lấy thông tin đơn hàng từ cơ sở dữ liệu
             var donHang = HiCaPheDatabase.Instance.database.DONDATHANG.SingleOrDefault(dh => dh.SODH == soDonHang);
-
+            #endregion
             if (donHang == null)
             {
                 return HttpNotFound();
@@ -155,9 +181,11 @@ namespace hicaphe2.Controllers
             donHang.Ngaygiaohang = null; // Đặt lại ngày giao hàng
             donHang.Dahuy = true; // Đặt trạng thái đã hủy
 
+            #region Singleton
             // Lưu thay đổi vào cơ sở dữ liệu
             HiCaPheDatabase.Instance.database.SaveChanges();
-
+            #endregion
+            
             // Thêm thông điệp vào TempData
             TempData["HuyDonHangSuccess"] = "Đơn hàng đã được hủy thành công.";
 

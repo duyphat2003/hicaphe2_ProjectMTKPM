@@ -17,8 +17,28 @@
             border-radius: 5px;
         }
     </style>
+    <style>
+        .custom-btn {
+            background-color: #your-color; /* Replace #your-color with the color code you want to use */
+            color: #fff; /* Text color */
+            /* Add any additional styling properties you need */
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
     <p>
-        @Html.ActionLink("Về trang chủ", "Index", "HiCaPhe", null, new { @class = "btn btn-primary btn-lg custom-btn" })
+        @if (Session["PhuongThucThanhToan"] != null && Session["PhuongThucThanhToan"].ToString() == "OnlinePayment")
+        {
+            <!-- Hiển thị nút hoặc liên kết đến trang thanh toán online -->
+            <a href="@Url.Action("CreateCheckOutSession", "GioHang", new { amount = ViewBag.TongTien })" class="btn btn-primary btn-lg custom-btn">Thanh toán online</a>
+        }
+        else
+        {
+            <!-- Hiển thị nút hoặc liên kết về trang chủ -->
+            @Html.ActionLink("Về trang chủ", "Index", "HiCaPhe", null, new { @class = "btn btn-primary btn-lg custom-btn" })
+        }
     </p>
 </div>
 
